@@ -6,14 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="app.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
     <title>web-calculator</title>
 </head>
 
 <body>
     <h1>The Web-Calculator</h1>
     <p>Your only stop to get what you need. Just here!</p>
-    <label for="number">Enter a number and the console saves</label>
-    <input type="text" name="number" id="">
+    <!--
+    Everything is in a container.
+    Container 
+    -->
+    <div class="calc-container">
+        <div class="textArea">
+            <textarea readonly="true">There is something to write here I bet</textarea>
+        </div>
+        <div class="calculator">
+            <button class="greyed-text">power</button><button class="greyed-text">lg</button><button class="greyed-text">ln</button><button class="greyed-text">(</button><button class="greyed-text">)</button>
+            <button class="greyed-text">
+                sqrt
+            </button><button class="orange-text">AC</button><button class="orange-text">Del</button><button class="orange-text">%</button><button class="orange-text">&divide;</button>
+            <button class="greyed-text">X!</button><button>7</button><button>8</button><button>9</button><button class="orange-text">&times;</button>
+            <button class="greyed-text">1/x</button><button>4</button><button>5</button><button>6</button><button class="orange-text">&minus;</button>
+            <button class="greyed-text">&pi;</button><button>1</button><button>2</button><button>3</button><button class="orange-text">&plus;</button>
+            <button class="greyed-text">list</button><button class="greyed-text">&#8337;</button><button>0</button><button>&sdot;</button><button class="orange-bg">&equals;</button>
+        </div>
+    </div>
+    <div class="footer">Made by galaxine &copy; 2020</div>
 </body>
 
 </html>

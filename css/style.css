@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+}
+
+.calc-container {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    display: grid;
+    grid-template-columns: repeat(5, 1rem);
+    row-gap: 2%;
+    column-gap: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.textArea {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    border-radius: 24px;
+    border: 1px double grey;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.textArea textarea {
+    width: 290px;
+    resize: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 24px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+}
+
+.greyed-text {
+    color: grey;
+}
+
+.orange-bg {
+    background-color: orange;
+    color: white;
+}
+
+.orange-text {
+    color: orange;
+}
+
+.shadow {
+    background-color: rgb(255, 165, 0);
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
