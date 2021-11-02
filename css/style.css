@@ -1,3 +1,9 @@
+:root {
+    --red: rgb(255, 0, 0);
+    --orange: rgb(255, 168, 6);
+    --black: rgb(0, 0, 0);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -24,12 +30,20 @@ body {
 }
 
 .calc-box {
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background-color: aqua;
+    background-color: grey;
     padding: 25px;
     justify-content: center;
     align-items: center;
+}
+
+textarea {
+    border: none;
+    resize: none;
+    font-size: 1.5rem;
+    text-align: right;
 }
 
 .calc-buttons {
@@ -40,7 +54,45 @@ body {
     column-gap: 2px;
 }
 
-.calc-screen {}
+button {
+    border: none;
+    border-radius: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.red {
+    background-color: var(--red);
+    color: white;
+}
+
+.less-red {
+    background-color: rgb(179, 4, 4)
+}
+
+.orange {
+    background-color: var(--orange);
+    color: white;
+}
+
+.black {
+    background-color: var(--black);
+    color: white;
+}
+
+.less-black {
+    background-color: rgb(155, 153, 153);
+    color: white;
+}
+
+.grey {
+    background-color: darkgray;
+    color: white;
+}
+
+.less-grey {
+    background-color: rgb(39, 39, 39);
+    color: white;
+}
 
 
 /*font family oswald*/

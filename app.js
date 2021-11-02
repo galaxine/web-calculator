@@ -1,49 +1,3 @@
-/**
- * Calculator:
- * When the user starts, he/she will see a calculator with a display showing 0.
- * The user can enter numbers and operators.
- * The calculator will perform the operation and display the result.
- * Sometimes, the user wants to perform an operation on the previous result or operation.
- * 
- * What are the steps?
- * *1LS. the user enteres a number for the left side.
- * TODO: The user presses a button, the number is a string and pushed to an array.
- * TODO: The array should be changed into a number and assigned to the leftside.
- * TODO: The leftside should be displayed on the calculator.
- * ! the user pBBressed the operator function
- * ! the leftside is undefined, the pressedFunc isn't   
- * ? But what if the user presses the operator function anyways? We have an inherent zero in the calculator.
- * ? Shouldn't we then take that as a leftside and continue?
- * *2LS. the user can enter another number to the left side as long as the user does not use an operator.
- * TODO: The user can add more number to the leftside until an operator is pressed and assigned 
- * TODO: to the 1st memory.
- * *3LSRS. if the user enters an operator, the calculator will memorize it and start to take numbers from the right side.
- * TODO: The user presses +/-x and it is assigned to the 1st memory. Leftside is locked out. 
- * TODO: the calculator shows a zero
- * *4RS. if the user has not entered a number yet but pressed another operator, the calculator will change the operation and get back to anticipating numbers for the right side.
- * TODO: The user didn't assign a number to the rightside yet. It is staying undefined
- * TODO: Because of it, if the user presses +/-x it is assigned to the 1st memory replacing it, the rightside stays unchangedly undefined.
- * *5RS. if the user entered a number, then it is assigned to the right side.
- *  !The operators can not be changed anymore, unless the user uses AC, which discards the whole operation or it presses enter.
- *  TODO: The user pressed a number and it was assigned to the rightside. 
- *  TODO: 1st function is in memory, leftside is locked out.
- * *6RS. the user can decide between an additional number added to the right side or pressing the equals button or the operator buttons.
- *  *7RS. if the user presses the equals button, then the calculator will perform the operation starting from 3LSRS or 4RS.
- *    *the LS,RS and operator will be assigned to a function to process the calculation, then assigned to the left side.
- * TODO: The user pressed equals, the left and right side are defined by now and the 1st operation usable
- * TODO: the oepration is being calculated and then assigned to leftside and then displayed.
- * TODO: remove the leftside from memory, turn it undefined.
- *      *If the user enters another number and has no operator, then this is a new calculation.
- *      TODO: user enters a number, check if the leftside is undefined, if it is, then a new number is assigned to the leftside.
- *      *if the user enters an oeprator first, the calculation will be continued.
- *      TODO: user enters an operator, it wants to continue from there.
- *      TODO: the leftside was undefined, so did the right side was undefined, now the 1st function is defined.
- *  *8RS. if the user presses the operator button, and the calculator has already a calculation memorized, then the calculator will perform the calculation in memory
- *   *and the new operation will be assigned to the left side. The right side will be assigned to undefined (needs to be assigned a new number)
- *   *and the operator has to be assigned again.
- *  
- * 
- */
 let leftside = undefined;
 let rightside = undefined;
 let offhand = undefined;
@@ -99,6 +53,7 @@ function operator(a, b, operate) {
 function round(num) { // * maximum three digits after the decimal point
     let result = num.toString().split("");
     let dot = result.indexOf(".");
+
     if (result.some(x => x === ".")) {
         if (result.length - dot > 4) {
             result.splice(dot + 5, result.length - dot);
@@ -108,12 +63,12 @@ function round(num) { // * maximum three digits after the decimal point
 }
 // on click
 function logic(event) {
-    let clickTarget;
+    let target;
     let content;
 
     if (event instanceof PointerEvent) {
-        clickTarget = event.target;
-        content = clickTarget.textContent;
+        target = event.target;
+        content = target.textContent;
     } else {
         content = event.key;
     }
@@ -177,10 +132,9 @@ function logic(event) {
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
                 secFunc = "";
-                debugCalc();
                 console.log("you entered the last if condition")
             }
-            debugCalc();
+            changeGrey(target, content);
             break;
         case ".":
             if (!digits.some(x => x === ".")) {
@@ -192,6 +146,7 @@ function logic(event) {
                     textArea.textContent = digits.join("");
                     rightside = parseFloat(digits.join(""));
                 }
+                changeGrey(target, content);
             }
             break;
         case "Del":
@@ -205,6 +160,7 @@ function logic(event) {
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
             }
+            changeRed(target);
             break;
         case "+":
         case "x":
@@ -273,9 +229,10 @@ function logic(event) {
                 leftside = parseFloat(textArea.textContent);
                 firstFunc = content;
             }
-            debugCalc();
+
             break;
         case "=":
+        case "Enter":
             if (leftside === undefined) {
                 console.log("leftside undefined equals zero");
                 textArea.textContent = "Do you want the world to end?!";
@@ -293,24 +250,38 @@ function logic(event) {
                 leftside !== undefined && rightside !== undefined && offhand !== undefined
             ) {
                 let newResult = operator(leftside, rightside, firstFunc);
-                let dummy = offhand.split("");
-                leftside = parseFloat(dummy.slice(0, length - 1).join(""));
-                firstFunc = dummy.slice(dummy.length - 1).join("");
-                leftside = operator(leftside, newResult, firstFunc);
-                textArea.textContent = round(leftside);
+                if (newResult == "Infinity") {
+                    textArea.textContent = "ARE YOU TRYING TO DO THE IMPOSSIBLE?!!!";
+                } else {
+                    let dummy = offhand.split("");
+                    leftside = parseFloat(dummy.slice(0, length - 1).join(""));
+                    firstFunc = dummy.slice(dummy.length - 1).join("");
+                    leftside = operator(leftside, newResult, firstFunc);
+                    textArea.textContent = round(leftside);
+                }
             } else if (
                 leftside !== undefined && rightside !== undefined
             ) {
-                textArea.textContent = `${round(operator(leftside, rightside, firstFunc))}`;
+                let result = `${round(operator(leftside, rightside, firstFunc))}`;
+                if (result == "Infinity") {
+                    textArea.textContent = "SOMEONE STOP THIS MADMAN!";
+                } else {
+
+                    textArea.textContent = `${round(operator(leftside, rightside, firstFunc))}`;
+                }
                 leftside = undefined;
                 rightside = undefined;
                 digits = [];
                 firstFunc = "";
                 secFunc = "";
             }
+            defaulting();
             break;
         case "%":
-            if (leftside === parseFloat(textArea.textContent)) {
+            if (leftside === undefined && textArea.textContent == "0") {
+                leftside = 0;
+                textArea.textContent = "0";
+            } else if (leftside === parseFloat(textArea.textContent)) {
                 leftside = leftside / 100;
                 digits = leftside.toString().split("");
                 textArea.textContent = leftside;
@@ -319,12 +290,13 @@ function logic(event) {
                 digits = rightside.toString().split("");
                 textArea.textContent = rightside;
             }
+
             break;
         case "AC":
         case "Escape":
             resetValues();
             textArea.textContent = "0";
-            debugCalc();
+            changeRed(target);
             break;
         default:
             console.log(event.key);
@@ -332,10 +304,56 @@ function logic(event) {
     }
 }
 
+
 calcBody.onclick = logic;
 
 window.onkeydown = logic;
 
+function changeGrey(target, content) {
+    target.classList.remove("grey");
+    target.classList.add("less-grey");
+    if (content !== ".") {
+        setTimeout(() => {
+            target.classList.remove("less-grey");
+            target.classList.add("grey");
+        }, 125)
+    }
+}
+
+function changeOrange(target, content) {
+    target.classList.remove("orange");
+    target.classList.add("less-orange");
+    if (content == "%") {
+        setTimeout(() => {
+            target.classList.remove("less-orange");
+            target.classList.add("orange")
+        }, 125);
+    }
+}
+
+function changeRed(target) {
+    target.classList.remove("red");
+    target.classList.add("less-red");
+    setTimeout(() => {
+        target.classList.remove("less-red");
+        target.classList.add("red");
+    }, 125)
+}
+
+function defaulting() {
+    let buttons = documen.querySelectorAll("button");
+    buttons.forEach(element => {
+        if (element.className == "less-black" || element.className == "black") {
+            element.classList.replace("less-black", "black");
+        } else if (element.className == "less-orange" || element.className == "orange") {
+            element.classList.replace("less-orange", "orange");
+        } else if (element.className == "less-red" || element.className == "red") {
+            element.classList.replace("red");
+        } else if (element.className = "less-grey" || element.className == "grey") {
+            element.classList.replace("grey");
+        }
+    });
+}
 
 function resetValues() {
     leftside = undefined;
@@ -344,5 +362,4 @@ function resetValues() {
     secFunc = "";
     offhand = undefined;
     digits = [];
-
 }
