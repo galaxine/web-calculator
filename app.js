@@ -99,6 +99,9 @@ function logic(event) {
                 digits.push(content);
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
+                let button = document.querySelector(".less-orange");
+                button.classList.remove("less-orange");
+                button.classList.add("orange");
             } else if (
                 leftside !== undefined &&
                 rightside !== undefined &&
@@ -121,6 +124,9 @@ function logic(event) {
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
                 secFunc = "";
+                let button = document.querySelector(".less-orange");
+                button.classList.remove("less-orange");
+                button.classList.add("orange");
             } else if (
                 leftside !== undefined &&
                 rightside === undefined &&
@@ -132,14 +138,29 @@ function logic(event) {
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
                 secFunc = "";
-                console.log("you entered the last if condition")
+                console.log("you entered the last if condition");
+                let button = document.querySelector(".less-orange");
+                button.classList.remove("less-orange");
+                button.classList.add("orange");
             }
             changeGrey(target, content);
             break;
         case ".":
+            /*.=> 0.3 */
             if (!digits.some(x => x === ".")) {
                 digits.push(content);
-                if (leftside !== undefined && rightside === undefined) {
+                if (digits.length === 1 && digits[0] == ".") {
+                    digits = [];
+                    digits.push("0");
+                    digits.push(content);
+                    if (leftside == undefined) {
+                        leftside = parseFloat(digits.join(""));
+                        textArea.textContent = leftside;
+                    } else {
+                        rightside = parseFloat(digits.join(""));
+                        textArea.textContent = rightside;
+                    }
+                } else if (leftside === undefined && rightside === undefined) {
                     textArea.textContent = digits.join("");
                     leftside = parseFloat(digits.join(""));
                 } else {
@@ -154,9 +175,15 @@ function logic(event) {
             if (leftside === parseInt(textArea.textContent)) {
                 digits.pop();
                 leftside = parseFloat(digits.join(""));
+                if (typeof(leftside) == "NaN") {
+                    textArea.textContent = "0";
+                }
                 textArea.textContent = leftside;
             } else if (rightside === parseInt(textArea.textContent)) {
                 digits.pop();
+                if (typeof(rightside) == "NaN") {
+                    textArea.textContent = "0";
+                }
                 rightside = parseFloat(digits.join(""));
                 textArea.textContent = rightside;
             }
@@ -177,6 +204,7 @@ function logic(event) {
             ) {
                 console.log("step 3");
                 firstFunc = content;
+
             } else if (leftside !== undefined &&
                 rightside === undefined &&
                 firstFunc !== "" &&
@@ -228,8 +256,15 @@ function logic(event) {
             ) {
                 leftside = parseFloat(textArea.textContent);
                 firstFunc = content;
+            } else if (
+                leftside !== undefined &&
+                rightside !== undefined &&
+                firstFunc === "" &&
+                secFunc === ""
+            ) {
+                firstFunc = content;
             }
-
+            changeOrange(target, content);
             break;
         case "=":
         case "Enter":
@@ -266,7 +301,6 @@ function logic(event) {
                 if (result == "Infinity") {
                     textArea.textContent = "SOMEONE STOP THIS MADMAN!";
                 } else {
-
                     textArea.textContent = `${round(operator(leftside, rightside, firstFunc))}`;
                 }
                 leftside = undefined;
@@ -275,6 +309,7 @@ function logic(event) {
                 firstFunc = "";
                 secFunc = "";
             }
+            changeOrange(target, content);
             defaulting();
             break;
         case "%":
@@ -290,14 +325,18 @@ function logic(event) {
                 digits = rightside.toString().split("");
                 textArea.textContent = rightside;
             }
-
+            changeOrange(target, content);
             break;
         case "AC":
         case "Escape":
             resetValues();
             textArea.textContent = "0";
             changeRed(target);
+            setTimeout(() => defaulting(), 1200)
             break;
+        case "git":
+        case "g":
+            window.open("https://github.com/galaxine", "_blank");
         default:
             console.log(event.key);
             break;
@@ -319,7 +358,14 @@ function changeGrey(target, content) {
         }, 125)
     }
 }
-
+/**
+ * Changes the buttons from orange to another one the moment the player presses it.
+ * The class is changed from orange to less-orange.
+ * % is a quick calc button as it is immediately applied.
+ * the rest of the orange buttons, except maybe the "=" button, are not changing unless another operator button is pressed. 
+ * @param {the current button caught by the clickEvent} target 
+ * @param {the content inside the button} content 
+ */
 function changeOrange(target, content) {
     target.classList.remove("orange");
     target.classList.add("less-orange");
@@ -327,8 +373,17 @@ function changeOrange(target, content) {
         setTimeout(() => {
             target.classList.remove("less-orange");
             target.classList.add("orange")
-        }, 125);
-    }
+        }, 250);
+    } // * here we check later if any classes that are equal to "content". If they aren't, then we change those to orange.
+    let buttons = document.querySelectorAll(".less-orange"); // * first of all, get all the less-orange classed buttons.
+    buttons.forEach(button => {
+        if (button.textContent !== content) {
+            if (content == "%") {} else {
+                button.classList.remove("less-orange");
+                button.classList.add("orange");
+            }
+        }
+    });
 }
 
 function changeRed(target) {
@@ -341,16 +396,16 @@ function changeRed(target) {
 }
 
 function defaulting() {
-    let buttons = documen.querySelectorAll("button");
+    let buttons = document.querySelectorAll("button");
     buttons.forEach(element => {
         if (element.className == "less-black" || element.className == "black") {
             element.classList.replace("less-black", "black");
         } else if (element.className == "less-orange" || element.className == "orange") {
             element.classList.replace("less-orange", "orange");
         } else if (element.className == "less-red" || element.className == "red") {
-            element.classList.replace("red");
+            element.classList.replace("less-red", "red");
         } else if (element.className = "less-grey" || element.className == "grey") {
-            element.classList.replace("grey");
+            element.classList.replace("less-grey", "grey");
         }
     });
 }
