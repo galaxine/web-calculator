@@ -14,7 +14,7 @@ function debugCalc() {
     console.log("offhand: " + offhand);
     console.log();
 }
-const textArea = document.querySelector("textarea");
+const textArea = document.querySelector(".textarea");
 const calcBody = document.querySelector(".calc-buttons");
 textArea.textContent = "0";
 
@@ -309,7 +309,9 @@ function logic(event) {
                 firstFunc = "";
                 secFunc = "";
             }
-            changeOrange(target, content);
+            setTimeout(() => {
+                changeOrange(target, content);
+            }, 125);
             defaulting();
             break;
         case "%":
