@@ -1,6 +1,7 @@
 # web-calculator
 a simple web-calculator
 
+Link: https://galaxine.github.io/web-calculator/
 ## What is this project about?
 I wanted to make a small app and prove myself I learned enough to make one.
 It can be clicked and can be used by keyboard:
